@@ -1,0 +1,28 @@
+meta {
+  name: CreatePregunta
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/preguntas
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "contenido": "Hva er 3 + 2?",
+    "alternativa_a": "3",
+    "alternativa_b": "4",
+    "alternativa_c": "5",
+    "alternativa_d": "6",
+    "respuesta_correcta": "C",
+    "asignatura": "Matte",
+    "nivel": 1
+  }
+}

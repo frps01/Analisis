@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reporte de Curso</title>
+  <link rel="stylesheet" href="teacherStyle.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Reporte de Curso</h1>
+    
+    <div class="filters">
+      <input type="text" id="filter-name" placeholder="Buscar alumno por nombre" />
+      <input type="text" id="filter-subject" placeholder="Buscar por asignatura" />
+    </div>
+
+    <table id="tabla-reporte" class="table">
+      <thead>
+        <tr>
+          <th>Alumno</th>
+          <th>Promedio</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="reporte-body"></tbody>
+    </table>
+  </div>
+  <script src="teacher.js"></script>
+</body>
+</html>

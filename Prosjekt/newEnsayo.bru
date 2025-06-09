@@ -1,0 +1,22 @@
+meta {
+  name: newEnsayo
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:8080/ensayos
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "asignatura": "Matte",
+    "cantidad_preguntas": 2
+  }
+}

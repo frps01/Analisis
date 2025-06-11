@@ -8,4 +8,15 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - "8080:8080"
+  
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: clave123
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
 

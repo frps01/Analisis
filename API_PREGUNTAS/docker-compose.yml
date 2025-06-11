@@ -1,29 +1,11 @@
-#version: "3.8"  # updated from 3.4 to 3.8 for better compatibility
-# "the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion" 
+version: "3.4"
 
 services:
   api_preguntas:
+    image: api_preguntas
     build:
-      context: . # current directory
-      dockerfile: Dockerfile # Dockerfile in the same directory - specified to use for building image
+      context: .
+      dockerfile: ./Dockerfile
     ports:
-      - "8080:8080"  # Expose port 8080 on the host
-    depends_on:
-      - db # Ensure the database service is started before the Node.js app (note this does not wait for the db to be ready)
-    environment:
-      - DB_HOST=db # Docker DNS resolves "db" to the MySQL container
-      - DB_USER=root
-      - DB_PASSWORD=root
-      - DB_NAME=BD10_PREGUNTAS #must match the MYSQL_DATABASE in the init.sql file
-      - DB_PORT=3306 #internal port of the MySQL container
+      - "8080:8080"
 
-  db:
-    image: mysql:8.0 # Use the official MySQL image
-    environment:
-      - MYSQL_ROOT_PASSWORD=root #required for MySQL
-      - MYSQL_DATABASE=BD10_PREGUNTAS #auto create this database on first run
-    ports:
-      - "3307:3306" # Map internal MySQL port to host port 3307
-                    # Avoids conflicts if MySQL is already running on the host
-    volumes:
-      - ./init:/docker-entrypoint-initdb.d # Mount the init directory to initialize the database

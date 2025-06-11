@@ -1,19 +1,13 @@
 const express = require('express');
-const router = express.Router();
+const router = new express.Router();
 
-// Import preguntasController (handles pregunta endpoints)
-const preguntasController = require('../controllers/index');
+const index = require('../controllers/index');
 
-// Import ensayoRoutes (entire subrouter)
-const ensayoRoutes = require('./ensayoRoutes');
+// Esto es un ejemplo - SE PUEDE BORRAR
+router.get('/', (req, res) => res.json({message: 'Probando... La prueba de API_Preguntas fue un éxito!'}));
 
-//=========== Pregunta endpoints ===========//
-
-router.get('/preguntas', preguntasController.getPreguntas);
-router.post('/preguntas', preguntasController.addPregunta);
-
-//=========== Ensayo endpoints ===========//
-
-router.use('/ensayos', ensayoRoutes); // Mount all ensayo routes under /ensayos
+//==========================endpoints(Routes)============================//
+// Esto es un ejemplo para endpoints
+router.get('/createTable', index.createTable);
 
 module.exports = router;

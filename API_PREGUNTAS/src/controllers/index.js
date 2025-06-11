@@ -1,71 +1,17 @@
-const database = require('../db.js'); // Import the database connection
+const database = require('../db');
 
 
-/**
- * this function retrieves all preguntas from the database
- * @param {*} req  This is the request object
- * @param {*} res  This is the response object
- */
+//Esta tabla es solo un ejemplo para que puedan ver como se hacen querys a la bdd, después puede ser eliminada
+const createTable = (req, res) => {
+    const query =  'CREATE TABLE IF NOT EXISTS user(id int AUTO_INCREMENT, firstname VARCHAR(50), lastname VARCHAR(50), email VARCHAR(50), PRIMARY KEY(id))';
 
-const getPreguntas = (req, res) => { //This function retrieves all preguntas from the database
-    database.query('SELECT * FROM preguntas', (err, rows) => { 
-        if (err ) {
-            console.error("Error retrieving preguntas: ", err);
-            return res.status(500).json({ error: 'Database error' });
-        }
-        res.json(rows);
-});
+    database.query(query, (err) => {
+        if (err) throw err;
+        res.send('Tabla creada')
+    });
 };
 
 
-/**
- * this function adds a pregunta to the database
- * validdates rquiered fields and performs SQL INSERT using prepared statements
- * @param {*} req  This is the request object
- * @param {*} res  This is the response object
- */
-
-const addPregunta = (req, res) => { //This function adds a pregunta to the database
-    const {
-        contenido,
-        alternativa_a,
-        alternativa_b,
-        alternativa_c,
-        alternativa_d,
-        respuesta_correcta,
-        asignatura,
-        nivel
-    } = req.body;
-
-    // Ensure all required fields are provided
-    if(!contenido || !alternativa_a || !alternativa_b || !alternativa_c || !alternativa_d || !respuesta_correcta || !asignatura || !nivel) {
-        return res.status(400).json({ error: 'All fields are required' });
-    }
-
-    // Perform SQL INSERT using prepared statements
-    const query = 'INSERT INTO preguntas (contenido, alternativa_a, alternativa_b, alternativa_c, alternativa_d, respuesta_correcta, asignatura, nivel) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-
-    database.query(query,[
-        contenido,
-        alternativa_a,
-        alternativa_b,
-        alternativa_c,
-        alternativa_d,
-        respuesta_correcta,
-        asignatura,
-        nivel
-    ], (err, result) => {
-        if (err) {
-            console.error("Error adding pregunta: ", err);
-            return res.status(500).json({ error: 'Database error' });
-        }
-        // If the insert was successful, return the ID of the new pregunta
-        res.status(201).json({ message: 'Pregunta added successfully', id: result.insertId });
-    });
-}
-
-
 module.exports = {
-    getPreguntas,
-    addPregunta
+    createTable
 };

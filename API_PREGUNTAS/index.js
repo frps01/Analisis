@@ -1,14 +1,13 @@
 const express = require('express');
-const morgan = require('morgan');
-const app = express();
+const morgan  = require('morgan');
 require('dotenv').config();
 
-const routes = require('./src/routes/index');
+const app = express();
+const routes = require('./src/routes/questions.routes');
 
 app.use(morgan('dev'));
-app.use(express.json());
+app.use(express.json());   // ← para leer JSON en POST/PUT
 app.use(routes);
 
-app.listen(process.env.PORT_API, () => {
-    console.log('Server running!');
-});
+const PORT = process.env.PORT_API || 3000;
+app.listen(PORT, () => console.log(`API corriendo en puerto ${PORT}`));

@@ -3,9 +3,14 @@ const db = require('../db');
 /* ---- GET /questions ----------------------------------- */
 async function getAll(req, res) {
   try {
+    console.log('Intentando obtener preguntas...');
     const [rows] = await db.query('SELECT * FROM preguntas');
+    console.log('Preguntas obtenidas:', rows);
     res.json(rows);
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { 
+    console.error('Error al obtener preguntas:', e);
+    res.status(500).json({ error: e.message }); 
+  }
 }
 
 /* ---- GET /questions/:id ------------------------------- */

@@ -9,6 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: password
     volumes:
       - ./API_EJEMPLO/init:/docker-entrypoint-initdb.d
+      - ./API_PREGUNTAS/init.sql:/docker-entrypoint-initdb.d/02-init.sql
 
 # Contenedor para la API de ejemplo (sacar)
   api_ejemplo:
@@ -43,6 +44,12 @@ services:
     build: ./API_PREGUNTAS
     ports:
       - "8080:8080"
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=preguntas
+      - PORT_API=8080
     depends_on:
       - mysql
 

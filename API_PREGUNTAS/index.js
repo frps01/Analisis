@@ -11,5 +11,5 @@ app.use(morgan('dev'));
 app.use(express.json());   // ← para leer JSON en POST/PUT
 app.use(routes);
 
-const PORT = process.env.PORT_API || 3000;
+const PORT = process.env.PORT_API || 8080;
 app.listen(PORT, () => console.log(`API corriendo en puerto ${PORT}`));

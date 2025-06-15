@@ -1,11 +1,21 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { questionsService } from '../services/questionsService';
+
+export interface QuestionFormData {
+  subject: string;
+  level: string;
+  statement: string;
+  option_a: string;
+  option_b: string;
+  option_c: string;
+  option_d: string;
+  correct_answer: string;
+}
 
 export interface QuestionFormProps {
-  initialData?: any;
-  onSubmit: (data: any) => void;
+  initialData?: QuestionFormData;
+  onSubmit: (data: QuestionFormData) => void;
   onCancel: () => void;
   loading?: boolean;
 }
@@ -17,10 +27,8 @@ const SUBJECTS = [
   'Ciencias',
 ];
 
-const levels = ['Fácil', 'Medio', 'Difícil'];
-
 export default function QuestionForm({ initialData, onSubmit, onCancel, loading }: QuestionFormProps) {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<QuestionFormData>({
     subject: '',
     level: '',
     statement: '',

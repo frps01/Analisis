@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Question } from '../types/question';
-import QuestionForm from './QuestionForm';
+import QuestionForm, { QuestionFormData } from './QuestionForm';
 
 const API_URL = 'http://localhost:8080/questions';
 
@@ -51,7 +51,7 @@ export default function QuestionList() {
     setEditId(id);
   };
 
-  const handleFormSubmit = async (data: any, isEdit: boolean, id?: number) => {
+  const handleFormSubmit = async (data: QuestionFormData, isEdit: boolean, id?: number) => {
     setFormLoading(true);
     try {
       if (isEdit && id) {

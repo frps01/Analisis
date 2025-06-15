@@ -23,6 +23,12 @@ export default function EstudiantePage() {
             Perfil
           </Link>
           <Link 
+            href="/estudiante/answers" 
+            className="bg-gray-200 hover:bg-gray-300 px-8 py-3 rounded-full text-gray-800 font-semibold transition-all"
+          >
+            Respuestas
+          </Link>
+          <Link 
             href="/estudiante" 
             className="bg-blue-100 hover:bg-blue-200 px-8 py-3 rounded-full text-blue-700 font-semibold transition-all border border-blue-200"
           >

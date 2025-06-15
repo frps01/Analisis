@@ -54,11 +54,50 @@ async function update(req, res) {
 
 /* ---- DELETE /questions/:id ---------------------------- */
 async function remove(req, res) {
+  let connection;
   try {
-    const [result] = await db.query('DELETE FROM preguntas WHERE id = ?', [req.params.id]);
-    if (!result.affectedRows) return res.status(404).json({ error: 'Pregunta no encontrada' });
-    res.status(204).end();            // 204 = sin contenido
-  } catch (e) { res.status(500).json({ error: e.message }); }
+    // Obtenemos una conexión del pool
+    connection = await db.getConnection();
+    
+    // Iniciamos la transacción
+    await connection.beginTransaction();
+
+    try {
+      // Verificamos si la pregunta existe
+      const [question] = await connection.query('SELECT id FROM preguntas WHERE id = ?', [req.params.id]);
+      if (!question.length) {
+        await connection.rollback();
+        return res.status(404).json({ error: 'Pregunta no encontrada' });
+      }
+
+      // Eliminamos las respuestas asociadas
+      await connection.query('DELETE FROM respuestas.respuestas WHERE question_id = ?', [req.params.id]);
+
+      // Eliminamos la pregunta
+      const [result] = await connection.query('DELETE FROM preguntas WHERE id = ?', [req.params.id]);
+      
+      if (!result.affectedRows) {
+        await connection.rollback();
+        return res.status(404).json({ error: 'Pregunta no encontrada' });
+      }
+
+      // Si todo salió bien, confirmamos la transacción
+      await connection.commit();
+      res.status(204).end();
+    } catch (e) {
+      // Si algo sale mal, revertimos la transacción
+      await connection.rollback();
+      throw e;
+    }
+  } catch (e) {
+    console.error('Error al eliminar pregunta:', e);
+    res.status(500).json({ error: e.message });
+  } finally {
+    // Liberamos la conexión
+    if (connection) {
+      connection.release();
+    }
+  }
 }
 
 module.exports = { getAll, getOne, create, update, remove };

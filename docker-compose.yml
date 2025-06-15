@@ -10,19 +10,12 @@ services:
     volumes:
       - ./API_EJEMPLO/init:/docker-entrypoint-initdb.d
       - ./API_PREGUNTAS/init.sql:/docker-entrypoint-initdb.d/02-init.sql
-
-# Contenedor para la API de ejemplo (sacar)
-  api_ejemplo:
-    build: ./API_EJEMPLO
-    image: api_ejemplo
-    volumes:
-      - ./API_EJEMPLO/:/usr/app
-      - /usr/app/node_modules
-    restart: on-failure
-    ports:
-      - "8082:8082"
-    depends_on:
-      - mysql
+      - ./API_RESPUESTASESTUDIANTES/init.sql:/docker-entrypoint-initdb.d/03-init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
 # Frontend con Next.js
   frontend:
@@ -51,12 +44,20 @@ services:
       - DB_NAME=preguntas
       - PORT_API=8080
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
-# #Api de respuestas
-#   api_respuestas:
-#     build: ./API_RESPUESTASESTUDIANTES
-#     ports:
-#       - "8081:8081"
-#     depends_on:
-#       - mysql
+#Api de respuestas
+  api_respuestas:
+    build: ./API_RESPUESTASESTUDIANTES
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=respuestas
+      - PORT_API=8081
+    depends_on:
+      mysql:
+        condition: service_healthy

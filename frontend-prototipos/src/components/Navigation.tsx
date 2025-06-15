@@ -57,6 +57,30 @@ export default function Navigation({ userRole }: NavigationProps) {
             >
               Perfil
             </Link>
+            {userRole === 'estudiante' && (
+              <Link
+                href="/estudiante/answers"
+                className={`ml-4 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                  pathname.startsWith('/estudiante/answers')
+                    ? 'border-blue-500 text-gray-900'
+                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                }`}
+              >
+                Respuestas
+              </Link>
+            )}
+            {userRole === 'estudiante' && (
+              <Link
+                href="/estudiante"
+                className={`ml-4 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                  pathname.startsWith('/estudiante') && !pathname.startsWith('/estudiante/answers')
+                    ? 'border-blue-500 text-gray-900'
+                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                }`}
+              >
+                Estudiante
+              </Link>
+            )}
           </div>
         </div>
       </div>
